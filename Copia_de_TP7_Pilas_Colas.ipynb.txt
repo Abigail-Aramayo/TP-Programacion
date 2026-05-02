@@ -1,0 +1,559 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "id": "header",
+      "metadata": {
+        "id": "header"
+      },
+      "source": [
+        "# **Programacion II** — Ing. Diaz Ayrton — 2026\n",
+        "### Tecnico Superior en Analisis de Sistemas y Desarrollo de Software\n",
+        "---"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "a17T6v7RVBSR"
+      },
+      "source": [
+        "# **Trabajo Practico 5 — Pilas y Colas**\n",
+        "\n",
+        "## Temas: Pila (Stack), Cola (Queue), operaciones push/pop/enqueue/dequeue\n",
+        "## Unidad 1 — Semana 5\n",
+        "\n",
+        "**Objetivo:** Implementar pilas y colas usando nodos, entender LIFO y FIFO, aplicar en problemas practicos."
+      ],
+      "id": "a17T6v7RVBSR"
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "FvY2Mk2PVBSS"
+      },
+      "source": [
+        "## Ejercicio 1 — Implementar Pila con nodos\n",
+        "Crear la clase `Pila` usando nodos enlazados con metodos:\n",
+        "- `push(dato)`: agregar elemento al tope\n",
+        "- `pop()`: remover y retornar elemento del tope\n",
+        "- `es_vacia()`: verificar si esta vacia\n",
+        "- `tope()`: ver elemento superior sin remover\n",
+        "- `__str__()`: mostrar contenido (de tope a base)\n",
+        "\n",
+        "💡 **Pista:** La pila necesita mantener una referencia `self.cima` (o `self.tope`) que apunta al nodo superior. `push()` agrega un nodo al inicio, `pop()` lo elimina. Recorda que en una pila: últimos en entrar, primeros en salir (LIFO)."
+      ],
+      "id": "FvY2Mk2PVBSS"
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "omCRvZdoVBST",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "b0c55dfb-57b2-4010-8a57-66fce16ce311"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Pila actual: 8 -> 3 -> 5\n",
+            "Pop: 8\n",
+            "Tope actual: 3\n",
+            "Pila final: 3 -> 5\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Ejercicio 1: Pila con nodos\n",
+        "class Nodo:\n",
+        "    def __init__(self, dato):\n",
+        "        self.dato = dato\n",
+        "        self.siguiente = None\n",
+        "\n",
+        "class Pila:\n",
+        "    def __init__(self):\n",
+        "        self.cima = None\n",
+        "\n",
+        "    def es_vacia(self):\n",
+        "        return self.cima is None\n",
+        "\n",
+        "    def push(self, dato):\n",
+        "        nuevo_nodo = Nodo(dato)\n",
+        "        nuevo_nodo.siguiente = self.cima\n",
+        "        self.cima = nuevo_nodo\n",
+        "\n",
+        "    def pop(self):\n",
+        "        if self.es_vacia():\n",
+        "            return None\n",
+        "        valor = self.cima.dato\n",
+        "        self.cima = self.cima.siguiente\n",
+        "        return valor\n",
+        "\n",
+        "    def tope(self):\n",
+        "        if self.es_vacia():\n",
+        "            return None\n",
+        "        return self.cima.dato\n",
+        "\n",
+        "    def __str__(self):\n",
+        "        actual = self.cima\n",
+        "        elementos = []\n",
+        "        while actual:\n",
+        "            elementos.append(str(actual.dato))\n",
+        "            actual = actual.siguiente\n",
+        "        return \" -> \".join(elementos) if elementos else \"Pila vacía\"\n",
+        "pila = Pila()\n",
+        "pila.push(5)\n",
+        "pila.push(3)\n",
+        "pila.push(8)\n",
+        "print(f\"Pila actual: {pila}\")\n",
+        "print(f\"Pop: {pila.pop()}\")\n",
+        "print(f\"Tope actual: {pila.tope()}\")\n",
+        "print(f\"Pila final: {pila}\")\n",
+        "\n",
+        "# Prueba: crear pila, push 5, 3, 8, pop(), tope()"
+      ],
+      "id": "omCRvZdoVBST"
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "npXYlfnEVBSW"
+      },
+      "source": [
+        "## Ejercicio 2 — Implementar Cola con nodos\n",
+        "Crear la clase `Cola` usando nodos enlazados con metodos:\n",
+        "- `enqueue(dato)`: agregar elemento al final\n",
+        "- `dequeue()`: remover y retornar elemento del frente\n",
+        "- `es_vacia()`: verificar si esta vacia\n",
+        "- `frente()`: ver primer elemento sin remover\n",
+        "- `__str__()`: mostrar contenido (frente a cola)\n",
+        "\n",
+        "💡 **Pista:** La cola necesita dos referencias: `self.frente` (primer elemento) y `self.final` (último elemento). `enqueue()` agrega al final, `dequeue()` elimina del frente. Primeros en entrar, primeros en salir (FIFO)."
+      ],
+      "id": "npXYlfnEVBSW"
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "ZrI7mMA-VBSW",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "9b3c6956-a51d-44ca-eb97-f3cce7268d1a"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Cola actual: 1 -> 2 -> 3\n",
+            "Dequeue: 1\n",
+            "Frente actual: 2\n",
+            "Cola final: 2 -> 3\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Ejercicio 2: Cola con nodos\n",
+        "\n",
+        "class Nodo:\n",
+        "    def __init__(self, dato):\n",
+        "        self.dato = dato\n",
+        "        self.siguiente = None\n",
+        "\n",
+        "class Cola:\n",
+        "    def __init__(self):\n",
+        "        self.frente_nodo = None\n",
+        "        self.final_nodo = None\n",
+        "\n",
+        "    def es_vacia(self):\n",
+        "        return self.frente_nodo is None\n",
+        "\n",
+        "    def enqueue(self, dato):\n",
+        "        nuevo_nodo = Nodo(dato)\n",
+        "        if self.es_vacia():\n",
+        "            self.frente_nodo = nuevo_nodo\n",
+        "            self.final_nodo = nuevo_nodo\n",
+        "        else:\n",
+        "            self.final_nodo.siguiente = nuevo_nodo\n",
+        "            self.final_nodo = nuevo_nodo\n",
+        "\n",
+        "    def dequeue(self):\n",
+        "        if self.es_vacia():\n",
+        "            return None\n",
+        "        valor = self.frente_nodo.dato\n",
+        "        self.frente_nodo = self.frente_nodo.siguiente\n",
+        "        if self.frente_nodo is None:\n",
+        "            self.final_nodo = None\n",
+        "        return valor\n",
+        "\n",
+        "    def frente(self):\n",
+        "        if self.es_vacia():\n",
+        "            return None\n",
+        "        return self.frente_nodo.dato\n",
+        "\n",
+        "    def __str__(self):\n",
+        "        actual = self.frente_nodo\n",
+        "        elementos = []\n",
+        "        while actual:\n",
+        "            elementos.append(str(actual.dato))\n",
+        "            actual = actual.siguiente\n",
+        "        return \" -> \".join(elementos) if elementos else \"Cola vacía\"\n",
+        "cola = Cola()\n",
+        "cola.enqueue(1)\n",
+        "cola.enqueue(2)\n",
+        "cola.enqueue(3)\n",
+        "\n",
+        "print(f\"Cola actual: {cola}\")\n",
+        "print(f\"Dequeue: {cola.dequeue()}\")\n",
+        "print(f\"Frente actual: {cola.frente()}\")\n",
+        "print(f\"Cola final: {cola}\")\n",
+        "# Prueba: crear cola, enqueue 1, 2, 3, dequeue(), frente()"
+      ],
+      "id": "ZrI7mMA-VBSW"
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "Aw1_jRx0VBSX"
+      },
+      "source": [
+        "## Ejercicio 3 — Parentesis balanceados\n",
+        "Crear funcion `verificar_parentesis(expresion)` que retorna True si los parentesis/corchetes/llaves estan balanceados.\n",
+        "\n",
+        "Usar una Pila. Cuando encuentres '(', '[' o '{', pushea. Cuando encuentres ')', ']' o '}', verifica que el tope coincida.\n",
+        "\n",
+        "Pruebas:\n",
+        "- \"(a + b) * [c + {d}]\" → True\n",
+        "- \"(a + b] * [c)\" → False\n",
+        "- \"((()))\" → True"
+      ],
+      "id": "Aw1_jRx0VBSX"
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "bkDlTl3aVBSY",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "2e10fab7-36c4-4944-fb12-7700ccbdaaaf"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "True\n",
+            "False\n",
+            "True\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Ejercicio 3: Parentesis balanceados\n",
+        "def verificar_parentesis(expresion):\n",
+        "    pila = []\n",
+        "    pares = {')': '(', ']': '[', '}': '{'}\n",
+        "\n",
+        "    for caracter in expresion:\n",
+        "        if caracter in '([{':\n",
+        "            pila.append(caracter)\n",
+        "        elif caracter in ')]}':\n",
+        "            if not pila or pila.pop() != pares[caracter]:\n",
+        "                return False\n",
+        "\n",
+        "    return len(pila) == 0\n",
+        "print(verificar_parentesis(\"(a + b) * [c + {d}]\"))\n",
+        "print(verificar_parentesis(\"(a + b] * [c)\"))\n",
+        "print(verificar_parentesis(\"((()))\"))"
+      ],
+      "id": "bkDlTl3aVBSY"
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "Zjc8VpA-VBSZ"
+      },
+      "source": [
+        "## Ejercicio 4 — Simulador de cola de atencion\n",
+        "Simular una cola de banco:\n",
+        "- Enqueue 5 clientes (id: 1-5)\n",
+        "- Dequeue y procesar 3 clientes\n",
+        "- Enqueue 2 clientes mas (id: 6-7)\n",
+        "- Dequeue y procesar los restantes\n",
+        "\n",
+        "Para cada dequeue, mostrar: \"Atendiendo cliente X\""
+      ],
+      "id": "Zjc8VpA-VBSZ"
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "oQ01pu3GVBSa",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "64f4225a-b9c6-4bf4-bf2f-9cf6c4586c22"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Atendiendo cliente 1\n",
+            "Atendiendo cliente 2\n",
+            "Atendiendo cliente 3\n",
+            "Atendiendo cliente 4\n",
+            "Atendiendo cliente 5\n",
+            "Atendiendo cliente 6\n",
+            "Atendiendo cliente 7\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Ejercicio 4: Simulador de cola\n",
+        "# Usar la clase Cola implementada\n",
+        "class Nodo:\n",
+        "    def __init__(self, dato):\n",
+        "        self.dato = dato\n",
+        "        self.siguiente = None\n",
+        "\n",
+        "class Cola:\n",
+        "    def __init__(self):\n",
+        "        self.frente_nodo = None\n",
+        "        self.final_nodo = None\n",
+        "\n",
+        "    def es_vacia(self):\n",
+        "        return self.frente_nodo is None\n",
+        "\n",
+        "    def enqueue(self, dato):\n",
+        "        nuevo_nodo = Nodo(dato)\n",
+        "        if self.es_vacia():\n",
+        "            self.frente_nodo = nuevo_nodo\n",
+        "            self.final_nodo = nuevo_nodo\n",
+        "        else:\n",
+        "            self.final_nodo.siguiente = nuevo_nodo\n",
+        "            self.final_nodo = nuevo_nodo\n",
+        "\n",
+        "    def dequeue(self):\n",
+        "        if self.es_vacia():\n",
+        "            return None\n",
+        "        valor = self.frente_nodo.dato\n",
+        "        self.frente_nodo = self.frente_nodo.siguiente\n",
+        "        if self.frente_nodo is None:\n",
+        "            self.final_nodo = None\n",
+        "        return valor\n",
+        "\n",
+        "cola_banco = Cola()\n",
+        "for i in range(1, 6):\n",
+        "    cola_banco.enqueue(i)\n",
+        "for _ in range(3):\n",
+        "    cliente = cola_banco.dequeue()\n",
+        "    print(f\"Atendiendo cliente {cliente}\")\n",
+        "cola_banco.enqueue(6)\n",
+        "cola_banco.enqueue(7)\n",
+        "while not cola_banco.es_vacia():\n",
+        "    cliente = cola_banco.dequeue()\n",
+        "    print(f\"Atendiendo cliente {cliente}\")"
+      ],
+      "id": "oQ01pu3GVBSa"
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "7w8_AHD1VBSa"
+      },
+      "source": [
+        "## Ejercicio 5 — Convertir decimal a binario\n",
+        "Crear funcion `decimal_a_binario(n)` que convierte un entero a su representacion binaria usando una Pila.\n",
+        "\n",
+        "Algoritmo: Dividir por 2, pushear residuo, repetir hasta que n=0, luego pop todos.\n",
+        "\n",
+        "Pruebas:\n",
+        "- decimal_a_binario(10) → \"1010\"\n",
+        "- decimal_a_binario(7) → \"111\"\n",
+        "- decimal_a_binario(0) → \"0\""
+      ],
+      "id": "7w8_AHD1VBSa"
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "VuzmFO9nVBSb",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "b0e2f252-e3f7-4cab-fd66-9797db50bbc0"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "1010\n",
+            "111\n",
+            "0\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Ejercicio 5: Decimal a binario\n",
+        "class Nodo:\n",
+        "    def __init__(self, dato):\n",
+        "        self.dato = dato\n",
+        "        self.siguiente = None\n",
+        "\n",
+        "class Pila:\n",
+        "    def __init__(self):\n",
+        "        self.cima = None\n",
+        "\n",
+        "    def es_vacia(self):\n",
+        "        return self.cima is None\n",
+        "\n",
+        "    def push(self, dato):\n",
+        "        nuevo_nodo = Nodo(dato)\n",
+        "        nuevo_nodo.siguiente = self.cima\n",
+        "        self.cima = nuevo_nodo\n",
+        "\n",
+        "    def pop(self):\n",
+        "        if self.es_vacia():\n",
+        "            return None\n",
+        "        valor = self.cima.dato\n",
+        "        self.cima = self.cima.siguiente\n",
+        "        return valor\n",
+        "def decimal_a_binario(n):\n",
+        "    if n == 0:\n",
+        "        return \"0\"\n",
+        "\n",
+        "    pila = Pila()\n",
+        "    while n > 0:\n",
+        "        residuo = n % 2\n",
+        "        pila.push(residuo)\n",
+        "        n = n // 2\n",
+        "    binario = \"\"\n",
+        "    while not pila.es_vacia():\n",
+        "        binario += str(pila.pop())\n",
+        "\n",
+        "    return binario\n",
+        "print(decimal_a_binario(10))\n",
+        "print(decimal_a_binario(7))\n",
+        "print(decimal_a_binario(0))"
+      ],
+      "id": "VuzmFO9nVBSb"
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "SvUAnKZGVBSb"
+      },
+      "source": [
+        "## Ejercicio 6 — Cola de prioridad basica\n",
+        "Implementar `ColaPrioridad` donde cada elemento tiene una prioridad (1=alta, 5=baja).\n",
+        "\n",
+        "- `enqueue(dato, prioridad)`: agregar con prioridad\n",
+        "- `dequeue()`: remover elemento de mayor prioridad (numero menor)\n",
+        "- Mostrar contenido\n",
+        "\n",
+        "Pruebas:\n",
+        "- Enqueue: (\"tarea1\", 3), (\"tarea2\", 1), (\"tarea3\", 2)\n",
+        "- Dequeue 2 veces → tarea2, tarea3"
+      ],
+      "id": "SvUAnKZGVBSb"
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "r3Gj8FJZVBSc",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "cff3042d-d971-46b1-ceec-34415b545e3b"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[tarea2, P:1] [tarea3, P:2] [tarea1, P:3] \n",
+            "Dequeue: tarea2\n",
+            "Dequeue: tarea3\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Ejercicio 7: Cola de prioridad\n",
+        "class Nodo:\n",
+        "    def __init__(self, dato, prioridad):\n",
+        "        self.dato = dato\n",
+        "        self.prioridad = prioridad\n",
+        "        self.siguiente = None\n",
+        "\n",
+        "class ColaPrioridad:\n",
+        "    def __init__(self):\n",
+        "        self.frente = None\n",
+        "\n",
+        "    def enqueue(self, dato, prioridad):\n",
+        "        nuevo = Nodo(dato, prioridad)\n",
+        "        if not self.frente or prioridad < self.frente.prioridad:\n",
+        "            nuevo.siguiente = self.frente\n",
+        "            self.frente = nuevo\n",
+        "        else:\n",
+        "            actual = self.frente\n",
+        "            while actual.siguiente and actual.siguiente.prioridad <= prioridad:\n",
+        "                actual = actual.siguiente\n",
+        "            nuevo.siguiente = actual.siguiente\n",
+        "            actual.siguiente = nuevo\n",
+        "\n",
+        "    def dequeue(self):\n",
+        "        if not self.frente:\n",
+        "            return None\n",
+        "        valor = self.frente.dato\n",
+        "        self.frente = self.frente.siguiente\n",
+        "        return valor\n",
+        "\n",
+        "    def mostrar(self):\n",
+        "        actual = self.frente\n",
+        "        while actual:\n",
+        "            print(f\"[{actual.dato}, P:{actual.prioridad}]\", end=\" \")\n",
+        "            actual = actual.siguiente\n",
+        "        print()\n",
+        "cola = ColaPrioridad()\n",
+        "cola.enqueue(\"tarea1\", 3)\n",
+        "cola.enqueue(\"tarea2\", 1)\n",
+        "cola.enqueue(\"tarea3\", 2)\n",
+        "\n",
+        "cola.mostrar()\n",
+        "print(f\"Dequeue: {cola.dequeue()}\")\n",
+        "print(f\"Dequeue: {cola.dequeue()}\")"
+      ],
+      "id": "r3Gj8FJZVBSc"
+    }
+  ],
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "toc_visible": true
+    },
+    "kernelspec": {
+      "display_name": "Python 3",
+      "language": "python",
+      "name": "python3"
+    },
+    "language_info": {
+      "name": "python",
+      "version": "3.11.0"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}
